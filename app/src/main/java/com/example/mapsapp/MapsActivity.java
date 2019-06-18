@@ -56,7 +56,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 new MarkerOptions()
                 .position(latLng)
                 .title("Japón")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker)));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
     }
