@@ -13,7 +13,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnMarkerDragListener {
 
     private FirstMapFragment firstMapFragment;
     private Marker markerPais;
@@ -37,18 +37,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        LatLng mx = new LatLng(19.406063, -99.4238213);
+        LatLng position = new LatLng(-0.217, -78.51);
         markerPais = googleMap.addMarker(new MarkerOptions()
-                .position(mx)
-                .title("México"));
+                .position(position)
+                .draggable(true)
+                .title("Ecuador"));
 
         CameraPosition cameraPosition = CameraPosition.builder()
-                .target(mx)
+                .target(position)
                 .zoom(10)
                 .build();
 
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         googleMap.setOnMarkerClickListener(this);
+        googleMap.setOnMarkerDragListener(this);
     }
 
     @Override
@@ -60,5 +62,29 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         startActivity(intent);
 
         return true;
+    }
+
+    @Override
+    public void onMarkerDragStart(Marker marker) {
+        if (marker.equals(markerPais)) {
+            Toast.makeText(this, "START", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    @Override
+    public void onMarkerDrag(Marker marker) {
+        if (marker.equals(markerPais)) {
+            String newTitle = String.valueOf(marker.getPosition().latitude) + " " + String.valueOf(marker.getPosition().longitude);
+
+            setTitle(newTitle);
+        }
+    }
+
+    @Override
+    public void onMarkerDragEnd(Marker marker) {
+        if (marker.equals(markerPais)) {
+            Toast.makeText(this, "END", Toast.LENGTH_SHORT).show();
+        }
     }
 }
